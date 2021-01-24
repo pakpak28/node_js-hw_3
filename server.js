@@ -17,10 +17,11 @@ var readHeader = function (req, res, next) {
       `Glad to see >>> ${username} 
       and his ip adress >>> ${remoteAddress}.`
     );
+    next();
   } else {
     console.log("u forgot to pass right secret header");
+    res.end("bye!");
   }
-  next();
 };
 var writeDb = function (req, res, next) {
   const { username } = req.headers;
@@ -40,4 +41,6 @@ app.use(myLogger, readHeader, writeDb);
 app.get("/", function (req, res) {
   res.send("assertion to db completed...");
 });
-app.listen(PORT, console.log(`Server is running on ${PORT}...`));
+app.listen(PORT, () => {
+  console.log(`Server is running on ${PORT}...`);
+});
